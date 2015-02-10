@@ -10,6 +10,10 @@
 
 @interface PersistentViewController ()
 
+@property (weak, nonatomic) IBOutlet UITextField *playerNameTextField;
+@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UIStepper *stepper;
+
 @end
 
 @implementation PersistentViewController
@@ -18,6 +22,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
+
+
+- (IBAction)saveButton:(id)sender {
+    NSMutableDictionary *playerDictionary = [NSMutableDictionary new];
+    
+    playerDictionary[@"nameKey"] = self.playerNameTextField.text;
+    [playerDictionary setObject:@(self.stepper.value) forKey:@"scoreKey"];
+    
+    
+
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
