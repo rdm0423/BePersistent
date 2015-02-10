@@ -8,6 +8,11 @@
 
 #import "PersistentViewController.h"
 
+static NSString * const nameKey = @"nameKey";
+static NSString * const player = @"player";
+static NSString * const scoreKey = @"scoreKey";
+
+
 @interface PersistentViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *playerNameTextField;
@@ -24,19 +29,21 @@
     
     NSDictionary *player = [[NSUserDefaults standardUserDefaults] objectForKey:@"player"];
     [self updateWithPlayerDictionary:player];
-    
 }
 
 - (void)updateWithPlayerDictionary:(NSDictionary *) player {
     
-    self.playerNameTextField.text = player[@"nameKey"];
-    self.scoreLabel.text = player[@"scoreKey"];
-    
     //have to create a number as below we have it as a number value. casting it.
-    NSNumber *stepperValue = player[@"scoreKey"];
-    self.stepper.value = [stepperValue doubleValue];
-                                
-    
+    NSNumber *score = player[@"scoreKey"];
+    self.playerNameTextField.text = player[@"nameKey"];
+    self.scoreLabel.text = [score stringValue];
+    self.stepper.value = [score doubleValue];
+}
+
+
+- (IBAction)stepperValueChanged:(id)sender {
+    UIStepper *stepper = sender;
+    self.scoreLabel.text = [NSString stringWithFormat:@"%.0f", stepper.value];
 }
 
 - (IBAction)saveButton:(id)sender {
@@ -47,8 +54,6 @@
     
     [[NSUserDefaults standardUserDefaults] setObject:playerDictionary forKey:@"player"];
     [[NSUserDefaults standardUserDefaults] synchronize];  //allows us to save down
-    
-
 }
 
 
